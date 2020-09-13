@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/yellow"
+    tools:context=".PetEditFragment">
+
+    <RelativeLayout
+        android:layout_width="290dp"
+        android:layout_height="320dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp">
+
+        <com.mandarin.imageapp.RoundedImageView
+            android:id="@+id/imageView"
+            android:layout_width="290dp"
+            android:layout_height="320dp"
+            app:circleColor="@android:color/black" >
+        </com.mandarin.imageapp.RoundedImageView>
+
+        <ImageView
+            android:id="@+id/iconCamera"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_camera" />
+
+        <TextView
+            android:id="@+id/caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:textColor="#FFF" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/galleryView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:text="Choose photo from gallery" />
+
+    <Button
+        android:id="@+id/cameraView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Take Photo" />
+
+    <Button
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/random" />
+</LinearLayout>
