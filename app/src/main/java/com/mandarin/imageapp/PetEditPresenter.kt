@@ -2,6 +2,7 @@ package com.mandarin.imageapp
 
 import android.graphics.Bitmap
 import android.util.Base64
+import android.util.Log
 import java.io.ByteArrayOutputStream
 
 class PetEditPresenter(val contract: PetEditContract) {
@@ -27,28 +28,12 @@ class PetEditPresenter(val contract: PetEditContract) {
         when (viewId) {
             R.id.galleryView -> contract.showGalleryPicker()
             R.id.cameraView -> contract.showCameraPicker()
+            R.id.randomView -> contract.randomEffects()
         }
     }
 
     fun updatePetPhotoData(value: Bitmap?) {
-//        pet.updatePhotoData(value) TODO: add when create model Pet
+       //pet.updatePhotoData(value)
         fetchPetImageAndUpdateView()
     }
-
-//    fun Pet.updatePhotoData(bitmap: Bitmap?) {
-//        photoData = bitmap?.toBase64Jpeg() ?: ""
-//    }
-}
-
-const val PREFIX_IMAGE_TYPE = "data:image/jpeg;base64,"
-
-
-fun Bitmap?.toBase64Jpeg(): String {
-    try {
-        val stream = ByteArrayOutputStream()
-        if (this == null || this.width == 0 || this.height == 0) return ""
-        this.compress(Bitmap.CompressFormat.JPEG, 50, stream)
-        return PREFIX_IMAGE_TYPE + Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
-    } catch (e: Exception) { }
-    return ""
 }

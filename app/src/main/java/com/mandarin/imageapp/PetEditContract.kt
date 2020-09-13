@@ -5,4 +5,5 @@ interface PetEditContract {
     fun loadPhotoLinkToView()
     fun showGalleryPicker()
     fun showCameraPicker()
+    fun randomEffects()
 }

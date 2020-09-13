@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore.Images
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,8 @@ const val REQUEST_PERMISSIONS_STORAGE_GROUP = 10106
 class PetEditFragment : Fragment(), View.OnClickListener, PetEditContract {
 
     private val presenter = PetEditPresenter(this)
+    lateinit var result: Map<String, String>
+    lateinit var photo: Bitmap
 
     override fun onResume() {
         super.onResume()
@@ -49,33 +50,33 @@ class PetEditFragment : Fragment(), View.OnClickListener, PetEditContract {
         imageView?.setOnClickListener(this)
         galleryView?.setOnClickListener(this)
         cameraView?.setOnClickListener(this)
+        randomView?.setOnClickListener(this)
         iconCamera?.setVisible(true)
+    }
+
+    override fun randomEffects() {
+        val tempUri: Uri? = activity?.applicationContext?.let { getImageUri(it, photo) }
+        result = ImageProcessingService.process(getRealPathFromURI(tempUri)).get()
+        Glide.with(this).load(result.get("imageUrl")).into(imageView)
+        iconCamera?.setVisible(show = false)
+        caption.text = result.get("caption")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when {
             requestCode == REQUEST_PHOTO_TAKE_IMAGE && resultCode == Activity.RESULT_OK -> {
-                val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                photo= data?.extras?.get("data") as Bitmap
                 val tempUri: Uri? = activity?.applicationContext?.let { getImageUri(it, photo) }
-                val result = ImageProcessingService.process(getRealPathFromURI(tempUri)).get()
+                result = ImageProcessingService.process(getRealPathFromURI(tempUri)).get()
                 Glide.with(this).load(result.get("imageUrl")).into(imageView)
                 iconCamera?.setVisible(show = false)
                 caption.text = result.get("caption")
             }
             requestCode == REQUEST_GALLERY_PICK_IMAGE && resultCode == Activity.RESULT_OK -> {
-//                data?.data?.let {
-//                    Log.d("some", "uri: ${it}")
-//                    Log.d("some", "pat: ${getRealPathFromURI(it)}")
-//                }
-
-                data?.data?.let {
-                    activity?.contentResolver?.openInputStream(it)
-                    Log.d("some", "it: ${activity?.contentResolver?.openInputStream(it)}")
+                data?.data?.let { activity?.contentResolver?.openInputStream(it) }?.let {
+                    presenter.updatePetPhotoData(BitmapFactory.decodeStream(it))
                 }
-//                    ?.let {
-//                    presenter.updatePetPhotoData(BitmapFactory.decodeStream(it))
-//                }
             }
         }
     }
